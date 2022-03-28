@@ -1,4 +1,3 @@
-from turtle import width
 import cv2
 import mediapipe
 import time
@@ -17,7 +16,7 @@ while True:
     imageRGB = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     results = hands.process(imageRGB)
     # print(results.multi_hand_landmarks)
-    
+
     x4, y4, x8, y8 = 0, 0, 0, 0
     if results.multi_hand_landmarks:
         for hand_landmarks in results.multi_hand_landmarks:
