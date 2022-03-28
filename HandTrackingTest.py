@@ -17,13 +17,26 @@ while True:
     results = hands.process(imageRGB)
     # print(results.multi_hand_landmarks)
 
+    x4, y4, x8, y8 = 0, 0, 0, 0
     if results.multi_hand_landmarks:
         for hand_landmarks in results.multi_hand_landmarks:
             for id, landmark in enumerate(hand_landmarks.landmark):
                 # print(id, landmark)
                 height, width, channel = image.shape
                 x, y = int(landmark.x*width), int(landmark.y*height)
-                print(id, x, y)
+                #print(id, x, y)
+
+                if id == 4:
+                    x4, y4 = x, y
+                elif id == 8:
+                    x8, y8 = x, y
+                result= ((((x8 - x4 )**2) + ((y8-y4)**2) )**0.5)
+                if result < 30:
+                    print('near')
+                elif result < 100:
+                    print('medium')
+                else:
+                    print('far')
 
             mediapipe_draw.draw_landmarks(
                 image, hand_landmarks, mediapipe_hands.HAND_CONNECTIONS)
