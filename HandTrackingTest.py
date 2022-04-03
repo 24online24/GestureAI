@@ -23,7 +23,6 @@ while True:
                 # print(id, landmark)
                 height, width, channel = image.shape
                 x, y = int(landmark.x*width), int(landmark.y*height)
-                print(id, x, y)
 
             mediapipe_draw.draw_landmarks(
                 image, hand_landmarks, mediapipe_hands.HAND_CONNECTIONS)
