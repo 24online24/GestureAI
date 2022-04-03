@@ -1,8 +1,6 @@
-from statistics import mode
 import cv2
 import mediapipe
 import time
-
 
 class HandDetector():
     def __init__(self, static_image=False, max_hands=2, complexity=1, detect_confidence=0.5, track_confidence=0.5):
@@ -65,7 +63,6 @@ def main():
 
         cv2.imshow("Image", image)
         cv2.waitKey(1)
-
 
 if __name__ == '__main__':
     main()
