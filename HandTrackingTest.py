@@ -31,11 +31,12 @@ while True:
                 elif id == 8:
                     x8, y8 = x, y
                 result= ((((x8 - x4 )**2) + ((y8-y4)**2) )**0.5)
+                print(result, end=' ')
                 if result < 30:
                     print('near')
-                elif result < 100:
+                elif 50 < result < 100:
                     print('medium')
-                else:
+                elif 120 < result:
                     print('far')
 
             mediapipe_draw.draw_landmarks(
