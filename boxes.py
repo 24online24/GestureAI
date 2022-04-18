@@ -9,10 +9,8 @@ def create_box(image):
     height = int(width*1.3)
     x = random.randrange(0, image_width-width)
     y = random.randrange(0, image_height-height)
-    coord = (x, y, width, height)
-    ok = True
-    cv2.rectangle(image, (x, y),
-                  (x+width, y+height), (255, 0, 255), 5)
+    # cv2.rectangle(image, (x, y),
+    #               (x+width, y+height), (255, 0, 255), 5)
     return((x, y, width, height))
 
 
@@ -42,7 +40,6 @@ if __name__ == '__main__':
         cv2.rectangle(image, (coordinates[0], coordinates[1]),
                       (coordinates[0]+coordinates[2], coordinates[1]+coordinates[3]), (255, 0, 255), 5)
         found = detect_hand(image, coordinates, tracker)
-        # print(found)
         box_now = not found
         cv2.imshow("Image", image)
         cv2.waitKey(1)
