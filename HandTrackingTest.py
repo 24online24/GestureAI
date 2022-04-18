@@ -17,7 +17,6 @@ while True:
     results = hands.process(imageRGB)
     # print(results.multi_hand_landmarks)
 
-    x4, y4, x8, y8 = 0, 0, 0, 0
     if results.multi_hand_landmarks:
         for hand_landmarks in results.multi_hand_landmarks:
             for id, landmark in enumerate(hand_landmarks.landmark):
