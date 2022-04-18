@@ -1,5 +1,5 @@
 import cv2
-import mediapipe
+import handtracking
 import time
 
 capture = cv2.VideoCapture(0, cv2.CAP_DSHOW)  # cv2.CAP_DSHOW
