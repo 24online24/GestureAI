@@ -9,8 +9,6 @@ def create_box(image):
     height = int(width*1.3)
     x = random.randrange(0, image_width-width)
     y = random.randrange(0, image_height-height)
-    # cv2.rectangle(image, (x, y),
-    #               (x+width, y+height), (255, 0, 255), 5)
     return((x, y, width, height))
 
 
