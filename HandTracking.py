@@ -46,7 +46,7 @@ def main():
     previous_time = 0
     current_time = 0
     capture = cv2.VideoCapture(0, cv2.CAP_DSHOW)
-    detector = HandDetector(complexity=0)
+    detector = HandDetector(complexity=1)
     while True:
         success, image = capture.read()
         image = detector.find_hands(image)

@@ -16,8 +16,7 @@ def create_box(image):
     return((x, y, width, height))
 
 
-def detect_hand(image, area):
-    detector = handtracking.HandDetector()
+def detect_hand(image, area, detector):
     image = detector.find_hands(image)
     landmarks = detector.find_position(image, draw=False)
     if not landmarks:
@@ -33,6 +32,7 @@ if __name__ == '__main__':
     capture = cv2.VideoCapture(0, cv2.CAP_DSHOW)  # cv2.CAP_DSHOW
     box_now = False
     found = False
+    tracker = handtracking.HandDetector()
     while True:
         success, image = capture.read()
         if box_now == False:
@@ -41,8 +41,8 @@ if __name__ == '__main__':
             found = False
         cv2.rectangle(image, (coordinates[0], coordinates[1]),
                       (coordinates[0]+coordinates[2], coordinates[1]+coordinates[3]), (255, 0, 255), 5)
-        found = detect_hand(image, coordinates)
-        print(found)
+        found = detect_hand(image, coordinates, tracker)
+        # print(found)
         box_now = not found
         cv2.imshow("Image", image)
         cv2.waitKey(1)
