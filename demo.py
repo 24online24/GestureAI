@@ -1,4 +1,3 @@
-from tensorflow.keras.models import load_model
 import numpy as np
 import mediapipe as mp
 import tensorflow as tf
@@ -12,9 +11,9 @@ def main():
     mpDraw = mp.solutions.drawing_utils
 
     # pune calea absolută, cea relativă nu merge
-    model = load_model('/home/norby/Coding/College/Practica/mp_hand_gesture')
+    model = tf.keras.models.load_model('C:/Users/Lenovo/OneDrive - Technical University of Cluj-Napoca/UT/AI/mp_hand_gesture')
 
-    f = open('/home/norby/Coding/College/Practica/gesture.names', 'r')
+    f = open('C:/Users/Lenovo/OneDrive - Technical University of Cluj-Napoca/UT/AI/gesture.names', 'r')
 
     classNames = f.read().split('\n')
     f.close()
@@ -68,8 +67,8 @@ def main():
 
         if className == 'fist' and first == False:
             first = True
-            path = '/usr/bin/vivaldi-stable' + ' %s' # calea absolută a browser-ului
-            webbrowser.get(path).open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', new = 1, autoraise = True)
+            # path = '/usr/bin/vivaldi-stable' + ' %s' # calea absolută a browser-ului
+            # webbrowser.get(path).open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', new = 1, autoraise = True)
         elif className == 'okay' and first == True:
             break
 
