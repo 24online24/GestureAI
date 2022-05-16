@@ -1,4 +1,5 @@
 from tracemalloc import start
+from turtle import width
 import cv2
 import random
 import HandTracking
@@ -30,8 +31,13 @@ if __name__ == '__main__':
     capture = cv2.VideoCapture(0, cv2.CAP_DSHOW)  # cv2.CAP_DSHOW
     mode = int(input('0 for 480p/ 1 for 1080p: '))
     if mode:
-        capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
-        capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+        width = 1920
+        height = 1080
+    else:
+        width = 640
+        height = 480
+    capture.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+    capture.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
     box_now = False
     found = False
     start_time = time.time()
@@ -55,7 +61,7 @@ if __name__ == '__main__':
         current_time = time.time()
         fps = 1/(current_time - previous_time)
         previous_time = current_time
-        cv2.putText(image, str(int(fps)), (600, 30),
+        cv2.putText(image, str(int(fps)), (width - 40, 30),
                     cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
                     
         cv2.rectangle(image, (0, 0), (125, 100), (128, 128, 128), -1)
