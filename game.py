@@ -1,3 +1,4 @@
+from tracemalloc import start
 import cv2
 import random
 import HandTracking
@@ -27,14 +28,21 @@ def detect_hand(image, area, detector):
 
 if __name__ == '__main__':
     capture = cv2.VideoCapture(0, cv2.CAP_DSHOW)  # cv2.CAP_DSHOW
+    mode = int(input('0 for 480p/ 1 for 1080p: '))
+    if mode:
+        capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+        capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
     box_now = False
     found = False
-    previous_time = 0
+    start_time = time.time()
+    previous_time = start_time
     current_time = 0
+    score = -1
     tracker = HandTracking.HandDetector()
     while True:
         success, image = capture.read()
         if box_now == False:
+            score += 1
             coordinates = create_box(image)
             box_now = True
             found = False
@@ -47,9 +55,19 @@ if __name__ == '__main__':
         current_time = time.time()
         fps = 1/(current_time - previous_time)
         previous_time = current_time
-
         cv2.putText(image, str(int(fps)), (600, 30),
                     cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+                    
+        cv2.rectangle(image, (0, 0), (125, 100), (128, 128, 128), -1)
+
+        elapsed = round(current_time-start_time, 2)
+        speed = round(score/elapsed, 2)
+        cv2.putText(image, 'Time: ' + str(elapsed), (10, 30),
+                    cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 2)
+        cv2.putText(image, 'Score: ' + str(score), (10, 60),
+                    cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 2)
+        cv2.putText(image, 'Speed: ' + str(speed), (10, 90),
+                    cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 2)
 
         cv2.imshow("Image", image)
         cv2.waitKey(1)
