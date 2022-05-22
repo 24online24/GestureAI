@@ -84,14 +84,10 @@ if __name__ == '__main__':
     current_time = 0
     score = -1
     tracker = HandTracking.HandDetector()
-    # timer_start = time.time()
-    # timer_prev = timer_start
     timer = random.randint(12, 15)
     
     while True and clicked:
         success, image = capture.read()
-        
-        print(timer)
         
         if timer <= 0.1:
             if score > highscore:
@@ -140,8 +136,6 @@ if __name__ == '__main__':
                     cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 2)
         cv2.putText(image, 'Time: ' + str(elapsed), (10, 90),
                     cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 2)
-        # cv2.putText(image, 'Speed: ' + str(speed), (10, 120),
-        #             cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 2)
         cv2.putText(image, 'Timer: ' + str(round((timer := timer - 0.1), 2)), (10, 120),
                     cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 2)
 
