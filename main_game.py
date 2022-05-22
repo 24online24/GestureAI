@@ -47,7 +47,7 @@ def onClick():
 def on_closing():
     return not onClick()
 
-def menu() -> bool:
+def menu():
     global root
     root = tk.Tk(className=" Gesture Game")
 
@@ -78,19 +78,22 @@ if __name__ == '__main__':
     capture.set(cv2.CAP_PROP_FRAME_WIDTH, WIDTH)
     capture.set(cv2.CAP_PROP_FRAME_HEIGHT, HEIGHT)
     box_now = found = False
+    first_box = True
     start_time = time.time()
     previous_time = start_time
     current_time = 0
     score = -1
     tracker = HandTracking.HandDetector()
-    timer_start = time.time()
-    timer_prev = timer_start
-    timer = random.randint(8, 15)
+    # timer_start = time.time()
+    # timer_prev = timer_start
+    timer = random.randint(12, 15)
     
     while True and clicked:
         success, image = capture.read()
         
-        if timer <= 0:
+        print(timer)
+        
+        if timer <= 0.1:
             if score > highscore:
                 file.seek(0)
                 file.truncate()
@@ -108,13 +111,15 @@ if __name__ == '__main__':
             box_now = True
             found = False
             
-            timer = random.randint(7, 10)
+            if first_box:
+                first_box = not first_box
+            else:
+                timer = random.randint(7, 10)
 
             
         cv2.rectangle(image, (coordinates[0], coordinates[1]),
                       (coordinates[0] + coordinates[2], coordinates[1] + coordinates[3]), (255, 0, 255), 5)
         found = detect_hand(image, coordinates, tracker)
-        # print(found)
         box_now = not found
 
         current_time = time.time()
@@ -137,7 +142,7 @@ if __name__ == '__main__':
                     cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 2)
         # cv2.putText(image, 'Speed: ' + str(speed), (10, 120),
         #             cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 2)
-        cv2.putText(image, 'Timer: ' + str(round((timer := timer - 0.2), 2)), (10, 120),
+        cv2.putText(image, 'Timer: ' + str(round((timer := timer - 0.1), 2)), (10, 120),
                     cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 2)
 
 
