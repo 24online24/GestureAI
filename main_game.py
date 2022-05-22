@@ -10,7 +10,7 @@ import tkinter.messagebox as ms
 WIDTH = 640
 HEIGHT = 480
 
-global highscore, clicked, root, prev_score
+global highscore, clicked, root, prev_score, _exit, file, file1
 
 def create_box(image):
     image_height, image_width = image.shape[0], image.shape[1]
@@ -19,7 +19,6 @@ def create_box(image):
     x = random.randrange(0, image_width - box_width)
     y = random.randrange(0, image_height - box_height)
     return((x, y, box_width, box_height))
-
 
 def detect_hand(image, area, detector):
     image = detector.find_hands(image)
@@ -32,46 +31,53 @@ def detect_hand(image, area, detector):
             return False
     return True
 
-
 def show_highscore():
     ms.showinfo("Highscore", f"Highscore = {highscore}")
 
 def show_prev_score():
+    global prev_score
     ms.showinfo("Previous Score", f'Previous Score = {prev_score}')
 
 def onClick():
+    global root, _exit
+    _exit = True
+    root.destroy()
+
+def start_game():
     global clicked, root
     clicked = True
     root.destroy()
     
-def on_closing():
-    return not onClick()
-
-def menu():
-    global root
-    root = tk.Tk(className=" Gesture Game")
-
-    root.geometry(f"{WIDTH}x{HEIGHT}")
-
+def place_buttons():
+    global prev_score, highscore
+    
+    file = open("/home/norby/Coding/College/Practica/MAIN_/highscore.txt", 'r+')
+    highscore = int(file.read())
+    file1 = open("/home/norby/Coding/College/Practica/MAIN_/prev_score.txt", 'r+')
+    prev_score = int(file1.read())
+    
     b1 = tk.Button(root, text = "Show Highscore", command = show_highscore)
     b2 = tk.Button(root, text = "Show previous score", command = show_prev_score)
-    b3 = tk.Button(root, text = "Start game", command = onClick)
+    b3 = tk.Button(root, text = "Start game", command = start_game)
 
     b2.place(x = HEIGHT // 2 + 10, y = HEIGHT // 2 - HEIGHT // 3)
     b1.place(x = HEIGHT // 2 + 23, y = HEIGHT // 2 - HEIGHT // 4.5)
     b3.place(x = HEIGHT // 2 + 36, y = HEIGHT // 1.93 - HEIGHT // 8)
     
-    root.protocol(":P", on_closing)
+def menu():
+    global root
+    root = tk.Tk(className=" Gesture Game")
+
+    root.geometry(f"{WIDTH}x{HEIGHT}")
+    root.after(1, place_buttons)
+    root.protocol("WM_DELETE_WINDOW", onClick)
     root.mainloop()
 
-if __name__ == '__main__':
-    file = open("/home/norby/Coding/College/Practica/MAIN_/highscore.txt", 'r+')
-    highscore = int(file.read())
-    file1 = open("/home/norby/Coding/College/Practica/MAIN_/prev_score.txt", 'r+')
-    prev_score = int(file1.read())
-    clicked = False
+def game():
+    global highscore, prev_score, clicked, _exit
     
-    menu()
+    file = open("/home/norby/Coding/College/Practica/MAIN_/highscore.txt", 'r+')
+    file1 = open("/home/norby/Coding/College/Practica/MAIN_/prev_score.txt", 'r+')
     
     capture = cv2.VideoCapture(0)  
     
@@ -94,11 +100,12 @@ if __name__ == '__main__':
                 file.seek(0)
                 file.truncate()
                 file.writelines(str(score))
+                
             
             file1.seek(0)
             file1.truncate()
             file1.writelines(str(score))
-                
+            
             break
         
         if box_now == False:
@@ -138,13 +145,40 @@ if __name__ == '__main__':
                     cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 2)
         cv2.putText(image, 'Timer: ' + str(round((timer := timer - 0.1), 2)), (10, 120),
                     cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 2)
-
-
-        if cv2.waitKey(1) == ord('q'): 
-            break
-
+        
         cv2.imshow("Image", image)
         cv2.waitKey(1)
-    
+        
+        if cv2.getWindowProperty("Image", cv2.WND_PROP_VISIBLE) < 1:
+            _exit = True
+            break
+        
+    cv2.destroyAllWindows()
+        
     file.close()
     file1.close()
+
+funcmap = {
+    1 : menu,
+    2 : game
+}
+
+if __name__ == '__main__':
+    global _exit
+    
+    _exit = False
+    
+    choice = 1
+    while True:
+        choice = 1
+        funcmap[choice]()
+        
+        if _exit:
+         break
+        
+        choice = 2
+        funcmap[choice]()
+        
+        if _exit:
+         break
+        
