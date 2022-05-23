@@ -46,14 +46,11 @@ def main():
     previous_time = 0
     current_time = 0
     capture = cv2.VideoCapture(0, cv2.CAP_DSHOW)
-    detector = HandDetector(complexity=0)
+    detector = HandDetector(complexity=1)
     while True:
         success, image = capture.read()
         image = detector.find_hands(image)
         landmarks_list = detector.find_position(image, draw=False)
-        #if len(landmarks_list) != 0:
-        #    print(landmarks_list[0])
-
         current_time = time.time()
         fps = 1/(current_time - previous_time)
         previous_time = current_time

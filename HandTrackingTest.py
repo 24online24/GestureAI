@@ -1,5 +1,5 @@
 import cv2
-import mediapipe
+import handtracking
 import time
 
 capture = cv2.VideoCapture(0, cv2.CAP_DSHOW)  # cv2.CAP_DSHOW
@@ -23,6 +23,20 @@ while True:
                 # print(id, landmark)
                 height, width, channel = image.shape
                 x, y = int(landmark.x*width), int(landmark.y*height)
+                #print(id, x, y)
+
+                if id == 4:
+                    x4, y4 = x, y
+                elif id == 8:
+                    x8, y8 = x, y
+                result= ((((x8 - x4 )**2) + ((y8-y4)**2) )**0.5)
+                print(result, end=' ')
+                if result < 30:
+                    print('near')
+                elif 50 < result < 100:
+                    print('medium')
+                elif 120 < result:
+                    print('far')
 
             mediapipe_draw.draw_landmarks(
                 image, hand_landmarks, mediapipe_hands.HAND_CONNECTIONS)
