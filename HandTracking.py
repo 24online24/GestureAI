@@ -2,6 +2,7 @@ import cv2
 import mediapipe
 import time
 
+
 class HandDetector():
     def __init__(self, static_image=False, max_hands=2, complexity=1, detect_confidence=0.5, track_confidence=0.5):
         self.static_image = static_image
@@ -18,8 +19,6 @@ class HandDetector():
     def find_hands(self, image, draw=True):
         imageRGB = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         self.results = self.hands.process(imageRGB)
-        # print(results.multi_hand_landmarks)
-
         if self.results.multi_hand_landmarks:
             for hand_landmarks in self.results.multi_hand_landmarks:
                 if draw:
@@ -32,7 +31,6 @@ class HandDetector():
         if self.results.multi_hand_landmarks:
             current_hand = self.results.multi_hand_landmarks[hand_number]
             for id, landmark in enumerate(current_hand.landmark):
-                # print(id, landmark)
                 height, width, channel = image.shape
                 x, y = int(landmark.x*width), int(landmark.y*height)
                 landmarks_list.append([id, x, y])
@@ -54,12 +52,12 @@ def main():
         current_time = time.time()
         fps = 1/(current_time - previous_time)
         previous_time = current_time
-
         cv2.putText(image, str(int(fps)), (600, 30),
                     cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
 
         cv2.imshow("Image", image)
         cv2.waitKey(1)
+
 
 if __name__ == '__main__':
     main()
