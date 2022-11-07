@@ -1,6 +1,6 @@
 import cv2
 import random
-import HandTracking
+import hand_tracking
 import time
 
 import tkinter as tk
@@ -88,7 +88,9 @@ def game():
     file = open("highscore.txt", 'r+')
     file1 = open("prev_score.txt", 'r+')
 
-    capture = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+    # capture = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+    capture = cv2.VideoCapture(2)
+
 
     capture.set(cv2.CAP_PROP_FRAME_WIDTH, WIDTH)
     capture.set(cv2.CAP_PROP_FRAME_HEIGHT, HEIGHT)
@@ -98,23 +100,23 @@ def game():
     previous_time = start_time
     current_time = 0
     score = -1
-    tracker = HandTracking.HandDetector()
+    tracker = hand_tracking.HandDetector()
     timer = random.randint(12, 15)
 
     while True and clicked:
         success, image = capture.read()
 
-        if timer <= 0.1:
-            if score > highscore:
-                file.seek(0)
-                file.truncate()
-                file.writelines(str(score))
+        # if timer <= 0.1:
+        #     if score > highscore:
+        #         file.seek(0)
+        #         file.truncate()
+        #         file.writelines(str(score))
 
-            file1.seek(0)
-            file1.truncate()
-            file1.writelines(str(score))
+        #     file1.seek(0)
+        #     file1.truncate()
+        #     file1.writelines(str(score))
 
-            break
+        #     break
 
         if box_now == False:
             score += 1
